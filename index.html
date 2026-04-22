@@ -416,7 +416,7 @@ function buildAnimals(){
     const dS=curLang==='en'?name:d.en;
     if(d.img){
       const im=document.createElement('img');
-      im.className='aimg'; im.src=d.img; im.alt=name; im.loading='lazy';
+      im.className='aimg'; im.alt=name; im.src=d.img;
       const fb=document.createElement('div');
       fb.className='aimg-err'; fb.textContent=d.em; fb.style.display='none';
       im.onerror=()=>{im.style.display='none';fb.style.display='flex';};
@@ -441,7 +441,7 @@ function openSheet(name){
   const dSub=curLang==='en'?name:d.en;
   document.getElementById('sheetBody').innerHTML=`
     <div class="st">
-      ${d.img ? `<img src="${d.img}" alt="${name}" style="width:70px;height:70px;border-radius:16px;object-fit:cover;flex-shrink:0;border:2px solid #e8f0e2" loading="lazy" id="sheet-img-${name}"/>` : `<span class="se">${d.em}</span>`}
+      ${d.img ? `<img src="${d.img}" alt="${name}" style="width:70px;height:70px;border-radius:16px;object-fit:cover;flex-shrink:0;border:2px solid #e8f0e2" id="sheet-img-${name}"/>` : `<span class="se">${d.em}</span>`}
       <div class="sn"><h2>${dTitle}</h2><p>${dSub}</p></div>
     </div>
     <div class="sr"><span class="sl">${T('sheetSci')}</span><span class="sv" style="font-style:italic">${d.sci}</span></div>
