@@ -59,6 +59,34 @@ html,body{font-family:'Noto Sans KR',-apple-system,sans-serif;background:#faf6ef
 .countdown-soon{color:#e07b2a;}
 .today-banner .countdown-txt{font-size:13px;opacity:.9;margin-top:4px;}
 .today-banner .countdown-num{font-size:22px;font-weight:700;margin-top:2px;letter-spacing:1px;}
+.news-header{text-align:center;padding:20px 14px 8px;}
+.news-month{font-size:12px;color:#aaa;margin-bottom:4px;font-weight:500;}
+.news-title{font-size:20px;font-weight:700;color:var(--green-dark);}
+.news-main-card{background:white;margin:0 14px 16px;border-radius:18px;padding:18px;box-shadow:0 2px 12px rgba(45,106,48,.1);border:1.5px solid var(--green-bg);}
+.news-badge{display:inline-block;background:var(--green);color:white;font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;margin-bottom:10px;}
+.news-card-title{font-size:16px;font-weight:700;color:#111;margin-bottom:10px;line-height:1.4;}
+.news-card-body{font-size:13px;color:#555;line-height:1.7;margin-bottom:12px;}
+.news-card-location{font-size:12px;color:var(--green);font-weight:600;background:var(--green-bg);display:inline-block;padding:4px 12px;border-radius:20px;}
+.news-section-title{font-size:13px;font-weight:700;color:var(--brown);margin:0 14px 10px;padding-left:10px;border-left:3px solid var(--green-light);}
+.condition-list{margin:0 14px 16px;display:flex;flex-direction:column;gap:8px;}
+.condition-card{background:white;border-radius:14px;padding:12px 14px;display:flex;align-items:center;gap:12px;box-shadow:0 1px 4px rgba(0,0,0,.06);}
+.condition-card.good{border-left:4px solid #4caf50;}
+.condition-card.rest{border-left:4px solid #ff9800;}
+.condition-dot{width:8px;height:8px;border-radius:50%;background:#4caf50;flex-shrink:0;}
+.rest-dot{background:#ff9800;}
+.condition-body{flex:1;}
+.condition-name{font-size:13px;font-weight:600;color:#111;margin-bottom:2px;}
+.condition-status{font-size:12px;color:#888;}
+.condition-badge{font-size:20px;}
+.news-footer{text-align:center;font-size:11px;color:#ccc;margin:8px 0 20px;}
+.video-wrap{margin:0 14px 16px;border-radius:16px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.1);aspect-ratio:9/16;max-height:500px;}
+.video-wrap iframe{width:100%;height:100%;display:block;}
+.insta-card{background:white;margin:0 14px 14px;border-radius:16px;padding:14px 16px;display:flex;align-items:center;gap:12px;box-shadow:0 2px 8px rgba(0,0,0,.06);border:1.5px solid #f0e8f5;}
+.insta-icon{font-size:28px;flex-shrink:0;}
+.insta-body{flex:1;}
+.insta-title{font-size:13px;font-weight:600;color:#111;margin-bottom:2px;}
+.insta-handle{font-size:12px;color:#c13584;font-weight:500;}
+.insta-btn{background:linear-gradient(135deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888);color:white;border:none;border-radius:20px;padding:7px 14px;font-size:12px;font-weight:700;cursor:pointer;text-decoration:none;white-space:nowrap;flex-shrink:0;}
 .map-wrap{margin:14px;border-radius:18px;box-shadow:0 4px 16px rgba(0,0,0,0.11);overflow:hidden;}
 .map-container{position:relative;display:inline-block;width:100%;}
 .map-img{width:100%;display:block;}
@@ -171,12 +199,55 @@ html,body{font-family:'Noto Sans KR',-apple-system,sans-serif;background:#faf6ef
       <div class="animal-grid" id="grid-vine"></div>
     </div>
   </div>
+
+  <!-- 이달의 소식 -->
+  <div class="sec" id="news">
+    <div class="news-header">
+      <div class="news-month" id="newsMonth"></div>
+      <div class="news-title" data-ko="이달의 소식" data-en="Monthly News">이달의 소식</div>
+    </div>
+
+    <!-- 메인 소식 카드 -->
+    <div class="news-main-card">
+      <div class="news-badge">🎉 NEW</div>
+      <div class="news-card-title" data-ko="새로 태어난 아기 왈라비를 소개합니다!" data-en="Meet our newborn baby Wallaby!">새로 태어난 아기 왈라비를 소개합니다!</div>
+      <div class="news-card-body" data-ko="덩굴숲에 새 가족이 생겼어요! 아직 엄마 배 속 주머니 안에서 자라고 있는 아기 왈라비를 만나보세요. 조용히 관찰하면 주머니 안에서 얼굴을 내미는 모습을 볼 수 있어요 🥹" data-en="A new family member has arrived in Vine Forest! Meet our baby wallaby still growing in mom's pouch. If you observe quietly, you might catch a glimpse of the little face peeking out 🥹">덩굴숲에 새 가족이 생겼어요! 아직 엄마 배 속 주머니 안에서 자라고 있는 아기 왈라비를 만나보세요. 조용히 관찰하면 주머니 안에서 얼굴을 내미는 모습을 볼 수 있어요 🥹</div>
+      <div class="news-card-location">📍 <span data-ko="덩굴숲" data-en="Vine Forest">덩굴숲</span></div>
+    </div>
+
+    <!-- 유튜브 영상 -->
+    <div class="video-wrap">
+      <iframe
+        src="https://www.youtube.com/embed/BOiLJB01pOk"
+        title="아기 왈라비"
+        frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen>
+      </iframe>
+    </div>
+
+
+
+    <!-- 인스타그램 -->
+    <div class="insta-card">
+      <div class="insta-icon">📸</div>
+      <div class="insta-body">
+        <div class="insta-title" data-ko="인스타그램에서 더 많은 소식을!" data-en="More news on Instagram!">인스타그램에서 더 많은 소식을!</div>
+        <div class="insta-handle">@zoolungzoolung_gj</div>
+      </div>
+      <a href="https://www.instagram.com/zoolungzoolung_gj" target="_blank" class="insta-btn">팔로우</a>
+    </div>
+
+    <div class="news-footer" data-ko="소식은 매월 업데이트됩니다" data-en="News is updated monthly">소식은 매월 업데이트됩니다</div>
+  </div>
+
 </div>
 
 <div class="tabbar">
-  <button class="tab on" onclick="ST('sched',this)"><span style="font-size:24px">📋</span><span class="tab-label">시간표</span></button>
-  <button class="tab" onclick="ST('map',this)"><span style="font-size:24px">🗺️</span><span class="tab-label">지도</span></button>
-  <button class="tab" onclick="ST('animals',this)"><span style="font-size:24px">🐾</span><span class="tab-label">동물소개</span></button>
+  <button class="tab on" onclick="ST('sched',this)"><span style="font-size:22px">📋</span><span class="tab-label" data-ko="시간표" data-en="Schedule">시간표</span></button>
+  <button class="tab" onclick="ST('map',this)"><span style="font-size:22px">🗺️</span><span class="tab-label" data-ko="지도" data-en="Map">지도</span></button>
+  <button class="tab" onclick="ST('animals',this)"><span style="font-size:22px">🐾</span><span class="tab-label" data-ko="동물소개" data-en="Animals">동물소개</span></button>
+  <button class="tab" onclick="ST('news',this)"><span style="font-size:22px">🗞️</span><span class="tab-label" data-ko="이달의소식" data-en="News">이달의소식</span></button>
 </div>
 
 <div class="sheet-overlay" id="overlay" onclick="closeSheet(event)">
@@ -487,6 +558,14 @@ function placePins(){
 buildSched();
 updateNext();
 buildAnimals();
+// 현재 월 표시
+(function(){
+  const months=['January','February','March','April','May','June','July','August','September','October','November','December'];
+  const koMonths=['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'];
+  const now=new Date();
+  const el=document.getElementById('newsMonth');
+  if(el) el.textContent=curLang==='en'?months[now.getMonth()]+' '+now.getFullYear():now.getFullYear()+'년 '+koMonths[now.getMonth()];
+})();
 setInterval(()=>{buildSched();updateNext();},30000);
 const mapImg=document.getElementById('mapImg');
 if(mapImg.complete)placePins();else mapImg.onload=placePins;
