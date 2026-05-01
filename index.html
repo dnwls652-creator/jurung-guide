@@ -531,12 +531,16 @@ function openSheet(name){
         return `<div class="spi"><span>${dP}${p.wk?`<span class="wkb">${T('wkLabel')}</span>`:''}</span><span class="spit">${p.t}</span></div>`;
       }).join('')}
     </div>`:''}`;
-  // 수달 영상 추가
-  if(name==='작은발톱수달'){
+  // 동물별 영상 추가
+  const videoMap={
+    '작은발톱수달':'eGwYnB3itnQ',
+    '킨카주':'nWxyH-v4VSU',
+  };
+  if(videoMap[name]){
     const videoHtml=`<div class="sheet-video">
-      <div class="sheet-video-title" data-ko="🎬 교감 영상" data-en="🎬 Interaction Video">${curLang==='en'?'🎬 Interaction Video':'🎬 교감 영상'}</div>
+      <div class="sheet-video-title">${curLang==='en'?'🎬 Interaction Video':'🎬 교감 영상'}</div>
       <div class="video-embed">
-        <iframe src="https://www.youtube.com/embed/eGwYnB3itnQ" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <iframe src="https://www.youtube.com/embed/${videoMap[name]}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
       </div>
     </div>`;
     document.getElementById('sheetBody').innerHTML += videoHtml;
