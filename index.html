@@ -92,7 +92,7 @@ html,body{font-family:'Noto Sans KR',-apple-system,sans-serif;background:#faf6ef
 .insta-title{font-size:13px;font-weight:600;color:#111;margin-bottom:2px;}
 .insta-handle{font-size:12px;color:#c13584;font-weight:500;}
 .insta-btn{background:linear-gradient(135deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888);color:white;border:none;border-radius:20px;padding:7px 14px;font-size:12px;font-weight:700;cursor:pointer;text-decoration:none;white-space:nowrap;flex-shrink:0;}
-.map-wrap{margin:14px;border-radius:18px;box-shadow:0 4px 16px rgba(0,0,0,0.11);overflow:hidden;cursor:grab;touch-action:none;}
+.map-wrap{margin:14px;border-radius:18px;box-shadow:0 4px 16px rgba(0,0,0,0.11);overflow:hidden;}
 .map-container{position:relative;display:inline-block;width:100%;}
 .map-img{width:100%;display:block;}
 
@@ -572,113 +572,7 @@ setInterval(()=>{buildSched();updateNext();},30000);
 const mapImg=document.getElementById('mapImg');
 
 
-/* ── 지도 핀치줌 & 드래그 ── */
-(function(){
-  const wrap = document.querySelector('.map-wrap');
-  const mc = document.getElementById('mc');
-  if(!wrap || !mc) return;
 
-  let scale = 1, minScale = 1, maxScale = 4;
-  let startDist = 0, startScale = 1;
-  let startMidX = 0, startMidY = 0;
-  let startTransX = 0, startTransY = 0;
-  let isDragging = false, lastX = 0, lastY = 0;
-  let translateX = 0, translateY = 0;
-  let isPinching = false;
-
-  function applyTransform(animate){
-    if(animate) mc.style.transition = 'transform 0.2s';
-    mc.style.transform = `translate(${translateX}px,${translateY}px) scale(${scale})`;
-    mc.style.transformOrigin = '0 0';
-    if(animate) setTimeout(()=>{ mc.style.transition = ''; }, 200);
-  }
-
-  function clampTranslate(){
-    const ww = wrap.offsetWidth;
-    const wh = wrap.offsetHeight;
-    const iw = mc.offsetWidth * scale;
-    const ih = mc.offsetHeight * scale;
-    translateX = Math.max(Math.min(0, ww - iw), Math.min(0, translateX));
-    translateY = Math.max(Math.min(0, wh - ih), Math.min(0, translateY));
-  }
-
-  function getDist(t){
-    const dx = t[0].clientX - t[1].clientX;
-    const dy = t[0].clientY - t[1].clientY;
-    return Math.sqrt(dx*dx + dy*dy);
-  }
-
-  // document 레벨에서 이벤트 가로채기 (user-scalable=no 우회)
-  document.addEventListener('touchstart', e=>{
-    if(!wrap.contains(e.target)) return;
-    if(e.touches.length === 2){
-      isPinching = true;
-      isDragging = false;
-      startDist = getDist(e.touches);
-      startScale = scale;
-      startTransX = translateX;
-      startTransY = translateY;
-      const rect = wrap.getBoundingClientRect();
-      startMidX = (e.touches[0].clientX + e.touches[1].clientX) / 2 - rect.left;
-      startMidY = (e.touches[0].clientY + e.touches[1].clientY) / 2 - rect.top;
-      e.preventDefault();
-    } else if(e.touches.length === 1){
-      isPinching = false;
-      if(scale > 1){
-        isDragging = true;
-        lastX = e.touches[0].clientX;
-        lastY = e.touches[0].clientY;
-      }
-    }
-  }, {passive:false});
-
-  document.addEventListener('touchmove', e=>{
-    if(!wrap.contains(e.target) && !isPinching && !isDragging) return;
-    if(e.touches.length === 2 && isPinching){
-      e.preventDefault();
-      const dist = getDist(e.touches);
-      let newScale = startScale * (dist / startDist);
-      newScale = Math.max(minScale, Math.min(maxScale, newScale));
-      // 핀치 중심점 기준으로 이동
-      const ratio = newScale / startScale;
-      translateX = startMidX - ratio * (startMidX - startTransX);
-      translateY = startMidY - ratio * (startMidY - startTransY);
-      scale = newScale;
-      clampTranslate();
-      applyTransform();
-    } else if(e.touches.length === 1 && isDragging){
-      e.preventDefault();
-      translateX += e.touches[0].clientX - lastX;
-      translateY += e.touches[0].clientY - lastY;
-      lastX = e.touches[0].clientX;
-      lastY = e.touches[0].clientY;
-      clampTranslate();
-      applyTransform();
-    }
-  }, {passive:false});
-
-  let lastTap = 0;
-  document.addEventListener('touchend', e=>{
-    if(!wrap.contains(e.target) && !isPinching && !isDragging) return;
-    if(e.touches.length === 0){
-      isPinching = false;
-      isDragging = false;
-      if(scale < minScale){
-        scale = minScale; translateX = 0; translateY = 0;
-        applyTransform(true);
-      }
-    }
-    // 더블탭 리셋
-    if(e.changedTouches.length === 1 && wrap.contains(e.target)){
-      const now = Date.now();
-      if(now - lastTap < 300){
-        scale = minScale; translateX = 0; translateY = 0;
-        applyTransform(true);
-      }
-      lastTap = now;
-    }
-  }, {passive:false});
-})();
 
 </script>
 </body>
