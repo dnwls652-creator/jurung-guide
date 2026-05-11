@@ -92,7 +92,7 @@ html,body{font-family:'Noto Sans KR',-apple-system,sans-serif;background:#faf6ef
 .insta-title{font-size:13px;font-weight:600;color:#111;margin-bottom:2px;}
 .insta-handle{font-size:12px;color:#c13584;font-weight:500;}
 .insta-btn{background:linear-gradient(135deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888);color:white;border:none;border-radius:20px;padding:7px 14px;font-size:12px;font-weight:700;cursor:pointer;text-decoration:none;white-space:nowrap;flex-shrink:0;}
-.map-wrap{margin:14px;border-radius:18px;box-shadow:0 4px 16px rgba(0,0,0,0.11);overflow:hidden;}
+.map-wrap{margin:14px;border-radius:18px;box-shadow:0 4px 16px rgba(0,0,0,0.11);overflow:hidden;cursor:grab;touch-action:none;}
 .map-container{position:relative;display:inline-block;width:100%;}
 .map-img{width:100%;display:block;}
 
@@ -565,6 +565,120 @@ buildAnimals();
 })();
 setInterval(()=>{buildSched();updateNext();},30000);
 const mapImg=document.getElementById('mapImg');
+
+
+/* ── 지도 핀치줌 & 드래그 ── */
+(function(){
+  const wrap = document.querySelector('.map-wrap');
+  const mc = document.getElementById('mc');
+  if(!wrap || !mc) return;
+
+  let scale = 1, minScale = 1, maxScale = 4;
+  let originX = 0, originY = 0;
+  let startDist = 0, startScale = 1;
+  let isDragging = false, lastX = 0, lastY = 0;
+  let translateX = 0, translateY = 0;
+
+  function applyTransform(){
+    mc.style.transform = `translate(${translateX}px,${translateY}px) scale(${scale})`;
+    mc.style.transformOrigin = '0 0';
+  }
+
+  function clampTranslate(){
+    const ww = wrap.offsetWidth;
+    const wh = wrap.offsetHeight;
+    const iw = mc.offsetWidth * scale;
+    const ih = mc.offsetHeight * scale;
+    const maxX = 0;
+    const minX = Math.min(0, ww - iw);
+    const maxY = 0;
+    const minY = Math.min(0, wh - ih);
+    translateX = Math.max(minX, Math.min(maxX, translateX));
+    translateY = Math.max(minY, Math.min(maxY, translateY));
+  }
+
+  function getDist(t){
+    const dx = t[0].clientX - t[1].clientX;
+    const dy = t[0].clientY - t[1].clientY;
+    return Math.sqrt(dx*dx + dy*dy);
+  }
+
+  function getMidpoint(t){
+    return {
+      x: (t[0].clientX + t[1].clientX) / 2,
+      y: (t[0].clientY + t[1].clientY) / 2,
+    };
+  }
+
+  // 터치 이벤트
+  wrap.addEventListener('touchstart', e=>{
+    if(e.touches.length === 2){
+      e.preventDefault();
+      startDist = getDist(e.touches);
+      startScale = scale;
+      const mid = getMidpoint(e.touches);
+      const rect = wrap.getBoundingClientRect();
+      originX = mid.x - rect.left - translateX;
+      originY = mid.y - rect.top - translateY;
+    } else if(e.touches.length === 1 && scale > 1){
+      e.preventDefault();
+      isDragging = true;
+      lastX = e.touches[0].clientX;
+      lastY = e.touches[0].clientY;
+    }
+  }, {passive:false});
+
+  wrap.addEventListener('touchmove', e=>{
+    if(e.touches.length === 2){
+      e.preventDefault();
+      const dist = getDist(e.touches);
+      let newScale = startScale * (dist / startDist);
+      newScale = Math.max(minScale, Math.min(maxScale, newScale));
+      const ratio = newScale / scale;
+      translateX = translateX - originX * (ratio - 1);
+      translateY = translateY - originY * (ratio - 1);
+      scale = newScale;
+      clampTranslate();
+      applyTransform();
+    } else if(e.touches.length === 1 && isDragging){
+      e.preventDefault();
+      const dx = e.touches[0].clientX - lastX;
+      const dy = e.touches[0].clientY - lastY;
+      translateX += dx;
+      translateY += dy;
+      lastX = e.touches[0].clientX;
+      lastY = e.touches[0].clientY;
+      clampTranslate();
+      applyTransform();
+    }
+  }, {passive:false});
+
+  wrap.addEventListener('touchend', e=>{
+    if(e.touches.length < 2) isDragging = false;
+    // 원래 크기 이하로 줄어들면 리셋
+    if(scale <= minScale){
+      scale = minScale;
+      translateX = 0;
+      translateY = 0;
+      applyTransform();
+    }
+  });
+
+  // 더블탭으로 리셋
+  let lastTap = 0;
+  wrap.addEventListener('touchend', e=>{
+    const now = Date.now();
+    if(now - lastTap < 300){
+      scale = minScale;
+      translateX = 0;
+      translateY = 0;
+      mc.style.transition = 'transform 0.3s';
+      applyTransform();
+      setTimeout(()=>mc.style.transition='', 300);
+    }
+    lastTap = now;
+  });
+})();
 
 </script>
 </body>
