@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" id="vp"/>
 <meta name="theme-color" content="#2d5a27"/>
 <title>주렁주렁 경주점 가이드</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet"/>
@@ -371,6 +371,11 @@ function ST(id,btn){
   document.querySelectorAll('.tab').forEach(b=>b.classList.remove('on'));
   document.getElementById(id).classList.add('vis');
   btn.classList.add('on');
+  const vp=document.getElementById('vp');
+  if(vp){
+    if(id==='map'){vp.setAttribute('content','width=device-width,initial-scale=1.0,maximum-scale=5.0,user-scalable=yes');}
+    else{vp.setAttribute('content','width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no');}
+  }
 }
 
 /* ── 언어 전환 ── */
